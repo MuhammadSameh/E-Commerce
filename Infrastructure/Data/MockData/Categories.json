@@ -1,0 +1,82 @@
+[
+  {
+    "CategoryId": 1,
+    "Name": "Electronics",
+    "ParentId": null
+  },
+  {
+    "CategoryId": 2,
+    "Name": "Fashion",
+    "ParentId": null
+  },
+  {
+    "CategoryId": 3,
+    "Name": "Books",
+    "ParentId": null
+  },
+  {
+    "CategoryId": 4,
+    "Name": "Music",
+    "ParentId": null
+  },
+  {
+    "CategoryId": 5,
+    "Name": "TVs, Satellites & Accessories",
+    "ParentId": 1
+  },
+  {
+    "CategoryId": 6,
+    "Name": "Laptops & Accessories",
+    "ParentId": 1
+  },
+  {
+    "CategoryId": 7,
+    "Name": "Audio & Home Entertainment",
+    "ParentId": 1
+  },
+  {
+    "CategoryId": 8,
+    "Name": "Women's Fashion",
+    "ParentId": 2
+  },
+  {
+    "CategoryId": 9,
+    "Name": "Men's Fashion",
+    "ParentId": 2
+  },
+  {
+    "CategoryId": 10,
+    "Name": "Watches",
+    "ParentId": 2
+  },
+  {
+    "CategoryId": 11,
+    "Name": "Children's Books",
+    "ParentId": 3
+  },
+  {
+    "CategoryId": 12,
+    "Name": "Religious & Spiritual",
+    "ParentId": 3
+  },
+  {
+    "CategoryId": 13,
+    "Name": "English Language Teaching",
+    "ParentId": 3
+  },
+  {
+    "CategoryId": 14,
+    "Name": "Piano",
+    "ParentId": 4
+  },
+  {
+    "CategoryId": 15,
+    "Name": "Guitar",
+    "ParentId": 4
+  },
+  {
+    "CategoryId": 16,
+    "Name": "Violin",
+    "ParentId": 4
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "BrandId": 1,
+    "Name": "Samsung",
+    "Logo": null
+  },
+  {
+    "BrandId": 2,
+    "Name": "LG",
+    "Logo": null
+  },
+  {
+    "BrandId": 3,
+    "Name": "Nike",
+    "Logo": null
+  },
+  {
+    "BrandId":4,
+    "Name": "Adidas",
+    "Logo": null
+  },
+  {
+    "BrandId": 5,
+    "Name": "Reebok",
+    "Logo": null
+  },
+  {
+    "BrandId": 6,
+    "Name": "Dar El Shrouk",
+    "Logo": null
+  },
+  {
+    "BrandId": 7,
+    "Name": "Book Juice",
+    "Logo": null
+  },
+  {
+    "BrandId": 8,
+    "Name": "Yamaha",
+    "Logo": null
+  },
+  {
+    "BrandId": 9,
+    "Name": "Casio",
+    "Logo": null
+  },
+  {
+    "BrandId": 10,
+    "Name": "Apple",
+    "Logo": null
+  }
+]

@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Entities.v1
+namespace Core.Entities
 {
     public class Product
     {
-        public int Product_Id { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Category_Id { get; set; }
+        public int CategoryId { get; set; }
+
+        public int BrandId { get; set; }
         public Category Category { get; set; }
+
+        public Brand Brand { get; set; }
         public List<Inventory> Inventories { get; set; }
-        public List<Products_Cart> Products_Carts { get; set; }
+        
     }
 }

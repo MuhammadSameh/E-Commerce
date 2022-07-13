@@ -1,0 +1,128 @@
+[
+  {
+    "Size": "32-Inch",
+    "Color": null,
+    "Quantity": 20,
+    "Price": 3000,
+    "ProductId": 1
+  },
+  {
+    "Size": "43-Inch",
+    "Color": null,
+    "Quantity": 20,
+    "Price": 5000,
+    "ProductId": 1
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 50,
+    "Price": 5000,
+    "ProductId": 2
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 30,
+    "Price": 10000,
+    "ProductId": 3
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 100,
+    "Price": 2000,
+    "ProductId": 4
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 50,
+    "Price": 2000,
+    "ProductId": 5
+  },
+  {
+    "Size": "M",
+    "Color": "Black",
+    "Quantity": 50,
+    "Price": 1500,
+    "ProductId": 6
+  },
+  {
+    "Size": "L",
+    "Color": "Black",
+    "Quantity": 50,
+    "Price": 1500,
+    "ProductId": 6
+  },
+  {
+    "Size": "M",
+    "Color": "White",
+    "Quantity": 50,
+    "Price": 1500,
+    "ProductId": 6
+  },
+  {
+    "Size": "L",
+    "Color": "White",
+    "Quantity": 50,
+    "Price": 1500,
+    "ProductId": 6
+  },
+  {
+    "Size": "L",
+    "Color": "Black",
+    "Quantity": 50,
+    "Price": 2000,
+    "ProductId": 7
+  },
+  {
+    "Size": "42",
+    "Color": "Brown",
+    "Quantity": 40,
+    "Price": 1900,
+    "ProductId": 8
+  },
+  {
+    "Size": "43",
+    "Color": "Brown",
+    "Quantity": 40,
+    "Price": 1900,
+    "ProductId": 8
+  },
+  {
+    "Size": "42",
+    "Color": "White",
+    "Quantity": 40,
+    "Price": 1900,
+    "ProductId": 8
+  },
+  {
+    "Size": "43",
+    "Color": "White",
+    "Quantity": 40,
+    "Price": 1900,
+    "ProductId": 8
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 10,
+    "Price": 6000,
+    "ProductId": 9
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 10,
+    "Price": 4000,
+    "ProductId": 10
+  },
+  {
+    "Size": null,
+    "Color": null,
+    "Quantity": 10,
+    "Price": 5000,
+    "ProductId": 11
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "ProductId": 1,
+    "Name": "Full HD Smart TV With Built In Receiver 43T5300 Black",
+    "Description": "Full HD Smart TV With Built In Receiver 43T5300 Black",
+    "CategoryId": 5,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 2,
+    "Name": "43 Inch LED HD Standard TV with Remote Control 43LF123R Black",
+    "Description": "43 Inch LED HD Standard TV with Remote Control 43LF123R Black",
+    "CategoryId": 5,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 3,
+    "Name": "Vostro 3510 laptop",
+    "Description": "5.6 Inch Full HD Intel core i7-1165G7 16GB RAM 1TB+256GB SSD 2GB Nvidia GeForce MX350/DOS (Without Windows) English/Arabic Grey",
+    "CategoryId": 6,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 4,
+    "Name": "AirPods Pro With MagSafe Charging Case White",
+    "Description": "AirPods Pro With MagSafe Charging Case White",
+    "CategoryId": 7,
+    "BrandId": 10
+  },
+  {
+    "ProductId": 5,
+    "Name": "Bluetooth Wireless Stereo Earbuds white",
+    "Description": "Bluetooth Wireless Stereo Earbuds white",
+    "CategoryId": 7,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 6,
+    "Name": "Essential Women's 7/8 Mid-Rise Leggings Black/White",
+    "Description": "Essential Women's 7/8 Mid-Rise Leggings Black/White",
+    "CategoryId": 2,
+    "BrandId": 3
+  },
+  {
+    "ProductId": 7,
+    "Name": "NSW Essential Fleece Pants Black",
+    "Description": "NSW Essential Fleece Pants Black",
+    "CategoryId": 9,
+    "BrandId": 3
+  },
+  {
+    "ProductId": 8,
+    "Name": "Stridium Walking Shoes Black",
+    "Description": "Stridium Walking Shoes Black",
+    "CategoryId": 9,
+    "BrandId": 5
+  },
+  {
+    "ProductId": 9,
+    "Name": "Musical Keyboard CTK-1500K2",
+    "Description": "Musical Keyboard CTK-1500K2",
+    "CategoryId": 14,
+    "BrandId": 9
+  },
+  {
+    "ProductId": 10,
+    "Name": "Coda Guitar",
+    "Description": "Coda Guitar",
+    "CategoryId": 15,
+    "BrandId": 8
+  },
+  {
+    "ProductId": 11,
+    "Name": "Classical Acoustic Guitar",
+    "Description": "Classical Acoustic Guitar",
+    "CategoryId": 15,
+    "BrandId": 8
+  }
+]

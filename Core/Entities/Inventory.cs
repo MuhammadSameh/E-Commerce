@@ -1,13 +1,13 @@
-﻿namespace Core.Entities.v1
+﻿namespace Core.Entities
 {
     public class Inventory
     {
-        public int Invetory_Id { get; set; }
+        public int InventoryId { get; set; }
         public string Size { get; set; }
         public string Color { get; set; }
         public int Quantity { get; set; }
-        public double Price { get; set; }
-        public int Product_Id { get; set; }
+        public decimal Price { get; set; }
+        public int ProductId { get; set; }
         public Product Product { get; set; }
     }
 }
