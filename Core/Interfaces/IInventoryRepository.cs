@@ -11,5 +11,7 @@ namespace Core.Interfaces
     {
         public Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName);
         public Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName);
+
+        public Task<IReadOnlyList<Inventory>> GetProducts();
     }
 }

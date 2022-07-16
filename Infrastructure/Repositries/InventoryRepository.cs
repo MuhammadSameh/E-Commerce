@@ -30,5 +30,22 @@ namespace Infrastructure.Repositries
             return await context.Inventories
                 .Where(i => i.Product.Category.Name == categoryName).ToListAsync();
         }
+
+        //public async Task<IReadOnlyList<Product>> GetProducts()
+        //{
+        //    return await context.Products
+        //        .Include(c => c.Category)
+        //        .Include(b => b.Brand)
+        //        .Include(m => m.Medias).ToListAsync();
+        //}
+
+        public async Task<IReadOnlyList<Inventory>> GetProducts()
+        {
+            return await context.Inventories
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Product.Medias)
+                .Include(m => m.Product.Brand).ToListAsync();
+        }
     }
 }
