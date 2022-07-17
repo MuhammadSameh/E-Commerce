@@ -10,6 +10,8 @@ using Core.Interfaces;
 using Infrastructure.Repositries;
 using System.Text.Json.Serialization;
 using API.Mapper;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API
 {
@@ -29,8 +31,6 @@ namespace API
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
 
-            //services.AddControllers().AddJsonOptions(x => 
-            //x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -45,8 +45,20 @@ namespace API
                     )
                 );
 
+            services.AddIdentity<User, IdentityRole>(
+                         options =>
+                         {
+                             options.Password.RequiredLength = 8;
+                             options.Password.RequireNonAlphanumeric = false;
+                             options.Password.RequireUppercase = false;
+                             options.Password.RequireLowercase = false;
+                         }
+
+                     ).AddEntityFrameworkStores<EcommerceContext>();
+
+
             services.AddAutoMapper(typeof(MappingProfiles));
-        }
+                              }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

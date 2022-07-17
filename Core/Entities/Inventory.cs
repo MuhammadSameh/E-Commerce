@@ -11,6 +11,7 @@ namespace Core.Entities
         public decimal Price { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
+        public List<Cart> Carts { get; set; }
         public List<Media> Medias { get; set; }
     }
 }
