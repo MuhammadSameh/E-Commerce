@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class EcommerceContext : DbContext
+    public class EcommerceContext : IdentityDbContext<User>
     {
-        public EcommerceContext(DbContextOptions options) : base(options)
+        public EcommerceContext(DbContextOptions<EcommerceContext> options) : base(options)
         {
         }
 
@@ -19,6 +21,8 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
         }
 
         public DbSet<Product> Products { get; set; }
