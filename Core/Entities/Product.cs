@@ -18,7 +18,7 @@ namespace Core.Entities
         public Brand Brand { get; set; }
 
         public List<Inventory> Inventories { get; set; }
-        public List<Media> Medias { get; set; }
+        
 
 
 

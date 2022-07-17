@@ -44,8 +44,11 @@ namespace Infrastructure.Repositries
             return await context.Inventories
                 .Include(c => c.Product)
                 .Include(b => b.Product.Category)
-                .Include(b => b.Product.Medias)
-                .Include(m => m.Product.Brand).ToListAsync();
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand)
+                .ToListAsync();
+
+
         }
     }
 }

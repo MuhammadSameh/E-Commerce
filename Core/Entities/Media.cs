@@ -13,8 +13,8 @@ namespace Core.Entities
 
 
         // Navigator Props
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public int InventoryId { get; set; }
+        public Inventory Inventory { get; set; }
 
     }
 }

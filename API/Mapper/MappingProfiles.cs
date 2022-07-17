@@ -10,14 +10,13 @@ namespace API.Mapper
         public MappingProfiles()
         {
             CreateMap<Inventory, InventoryToRepresent>()
+                .ForMember(m => m.Medias,
+                x => x.MapFrom(i => i.Medias.Select(x => x.PicUrl)) 
+                );
 
-                .ForMember(m => m.Brand, x => x.MapFrom(i => i.Product.Brand.Name))
-                .ForMember(m => m.Category, x => x.MapFrom(i => i.Product.Category.Name))
-                .ForMember(
-                m => m.Medias,
-                x => x.MapFrom(i => i.Product.Medias.Select(x=>x.PicUrl)) // Not Completed !! trying to fix
-                )
-                ;
+            CreateMap<Product, ProductDto>()
+                .ForMember(pdto => pdto.Brand, p => p.MapFrom(i => i.Brand.Name))
+                .ForMember(pdto => pdto.Category, p => p.MapFrom(i => i.Category.Name));
         }
 
     }
