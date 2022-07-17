@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace API.DTOs
 {
-    public class InventoryToRepresent
+    public class InventoryDto
     {
         public int InventoryId { get; set; }
         public int ProductId { get; set; }

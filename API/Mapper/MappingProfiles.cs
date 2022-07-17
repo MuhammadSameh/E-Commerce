@@ -9,7 +9,7 @@ namespace API.Mapper
     {
         public MappingProfiles()
         {
-            CreateMap<Inventory, InventoryToRepresent>()
+            CreateMap<Inventory, InventoryDto>()
                 .ForMember(m => m.Medias,
                 x => x.MapFrom(i => i.Medias.Select(x => x.PicUrl)) 
                 );

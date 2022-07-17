@@ -25,5 +25,6 @@ namespace Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Media> Medias { get; set; }
     }
 }

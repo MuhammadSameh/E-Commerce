@@ -105,7 +105,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.ToTable("Media");
+                    b.ToTable("Medias");
                 });
 
             modelBuilder.Entity("Core.Entities.Product", b =>
