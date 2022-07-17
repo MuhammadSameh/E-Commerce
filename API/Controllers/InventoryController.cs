@@ -27,12 +27,12 @@ namespace API.Controllers
         }
 
         [HttpGet("AllProducts/test")]
-        public async Task<ActionResult<IReadOnlyList<InventoryToRepresent>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetProducts()
         {
             IReadOnlyList<Inventory> invens = await repo.GetProducts();
 
             return Ok(
-                this._mapper.Map<IReadOnlyList<InventoryToRepresent>>(invens)
+                this._mapper.Map<IReadOnlyList<InventoryDto>>(invens)
                 );
         }
 
