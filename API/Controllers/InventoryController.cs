@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using API.DTOs;
+using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,16 +12,28 @@ namespace API.Controllers
     public class InventoryController : Controller
     {
         private readonly IInventoryRepository repo;
+        private readonly IMapper _mapper;
 
-        public InventoryController(IInventoryRepository repo)
+        public InventoryController(IInventoryRepository repo,IMapper mapper)
         {
             this.repo = repo;
+            this._mapper = mapper;
         }
 
         [HttpGet("AllProducts")]
         public async Task<ActionResult<IReadOnlyList<Inventory>>> getAllProducts()
         {
             return Ok(await repo.GetAllAsync());
+        }
+
+        [HttpGet("AllProducts/test")]
+        public async Task<ActionResult<IReadOnlyList<InventoryToRepresent>>> GetProducts()
+        {
+            IReadOnlyList<Inventory> invens = await repo.GetProducts();
+
+            return Ok(
+                this._mapper.Map<IReadOnlyList<InventoryToRepresent>>(invens)
+                );
         }
 
         [HttpGet("ProductsByBrand/{brandName}")]
