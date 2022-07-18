@@ -18,6 +18,20 @@ namespace Infrastructure.Repositries
         {
             this.context = context;
         }
+
+        public void Add(T obj)
+        {
+            context.Set<T>().Add(obj);
+            context.SaveChanges();
+        }
+
+        public void Delete(T obj)
+        {
+
+           context.Set<T>().Remove(obj);
+            context.SaveChanges();
+        }
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await context.Set<T>().ToListAsync();
@@ -26,6 +40,12 @@ namespace Infrastructure.Repositries
         public async Task<T> GetByIdAsync(int id)
         {
             return await context.Set<T>().FindAsync(id);
+        }
+
+        public void Update(T obj)
+        {
+            context.Update(obj);
+            context.SaveChanges();
         }
     }
 }
