@@ -36,6 +36,8 @@ namespace API.Controllers
                 );
         }
 
+        
+
         [HttpGet("ProductsByBrand/{brandName}")]
         public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName)
         {
@@ -47,5 +49,59 @@ namespace API.Controllers
         {
             return Ok(await repo.GetInventoryByCategory(categoryName));
         }
+
+        // CRUD
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Category>> GetInventory(int id)
+        {
+
+            return Ok(await repo.GetByIdAsync(id));
+        }
+
+        [HttpPost]
+        public ActionResult<Category> AddInventory([FromBody] Inventory inventory)
+        {
+            repo.Add(inventory);
+            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+        }
+
+        [HttpPost("{id}")]
+        public ActionResult<Category> UpdateInventory(int id, [FromBody] InventoryDto inventoryDto)
+        {
+            if (id != inventoryDto.InventoryId)
+            {
+                return BadRequest();
+            }
+            else if (inventoryDto is null)
+            {
+                return NotFound();
+            }
+
+            Inventory inventory = _mapper.Map<Inventory>(inventoryDto);
+            repo.Update(inventory);
+
+            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+        }
+
+        [HttpPost("delete/{id}")]
+        public async Task<ActionResult> DeleteInventory(int id)
+        {
+            Inventory inventory = await repo.GetByIdAsync(id);
+
+            if (inventory is null)
+                return NotFound();
+            if (inventory.InventoryId != id)
+                return NotFound();
+
+
+            repo.Delete(inventory);
+
+            return NoContent();
+        }
+
+
+
+
     }
 }

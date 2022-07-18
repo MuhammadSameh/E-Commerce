@@ -11,12 +11,15 @@ namespace API.Mapper
         {
             CreateMap<Inventory, InventoryDto>()
                 .ForMember(m => m.Medias,
-                x => x.MapFrom(i => i.Medias.Select(x => x.PicUrl)) 
+                x => x.MapFrom(i => i.Medias.Select(x => x.PicUrl))
                 );
 
             CreateMap<Product, ProductDto>()
                 .ForMember(pdto => pdto.Brand, p => p.MapFrom(i => i.Brand.Name))
                 .ForMember(pdto => pdto.Category, p => p.MapFrom(i => i.Category.Name));
+
+            CreateMap<InventoryDto, Inventory>();
+            CreateMap<CategoryDto, Category>();
         }
 
     }

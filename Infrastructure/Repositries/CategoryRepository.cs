@@ -19,6 +19,12 @@ namespace Infrastructure.Repositries
             this.context = context;
         }
 
+        public async Task<Category> GetCategoryById(int id)
+        {
+            return await context.Categories.Include(p => p.ParentCategory).FirstOrDefaultAsync(i => i.CategoryId == id);
+           
+        }
+
         public async Task<IReadOnlyList<Category>> GetParentCategories()
         {
             return await context.Categories.Where(c => c.ParentId == null).ToListAsync();
