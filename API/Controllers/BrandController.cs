@@ -30,11 +30,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Brand> AddBrand([FromBody] Brand brand)
+        public async Task<ActionResult<Brand>> AddBrand([FromBody] Brand brand)
         {
 
 
-            _repo.Add(brand);
+            await _repo.Add(brand);
             return CreatedAtAction("GetBrand", new { id = brand.BrandId }, brand);
         }
 

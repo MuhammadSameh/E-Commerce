@@ -20,6 +20,7 @@ namespace API.Mapper
 
             CreateMap<InventoryDto, Inventory>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<RegisterDto, User>().ForMember(p=>p.PasswordHash, p=>p.MapFrom(i=>i.Password));
         }
 
     }

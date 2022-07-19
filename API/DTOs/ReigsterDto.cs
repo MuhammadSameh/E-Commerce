@@ -2,8 +2,18 @@
 
 namespace API.DTOs
 {
-    public class ReigsterDto
+    public class RegisterDto
     {
+        /*
+         * 
+         *  ID
+         *  EmailConfirmed => bool
+         *  Phone number confirmed => bool
+         *  two factor confirmed => bool
+         *  lockedout confirmed => bool
+         *  Access faild count => int
+         * 
+         */
         [Required]
         public string UserName { get; set; }
         [Required]
