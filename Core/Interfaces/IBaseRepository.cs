@@ -10,7 +10,7 @@ namespace Core.Interfaces
     {
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        void Add(T obj);
+        Task Add(T obj);
         void Update(T obj);
         void Delete(T obj);
     }

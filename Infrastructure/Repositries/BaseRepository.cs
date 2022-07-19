@@ -19,10 +19,10 @@ namespace Infrastructure.Repositries
             this.context = context;
         }
 
-        public void Add(T obj)
+        public async Task Add(T obj)
         {
-            context.Set<T>().Add(obj);
-            context.SaveChanges();
+            await context.Set<T>().AddAsync(obj);
+            await context.SaveChangesAsync();
         }
 
         public void Delete(T obj)
