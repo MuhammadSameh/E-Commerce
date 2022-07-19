@@ -30,5 +30,7 @@ namespace Infrastructure.Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Media> Medias { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

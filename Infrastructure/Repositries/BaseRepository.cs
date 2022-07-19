@@ -42,6 +42,11 @@ namespace Infrastructure.Repositries
             return await context.Set<T>().FindAsync(id);
         }
 
+        public async Task Save()
+        {
+             await context.SaveChangesAsync();
+        }
+
         public void Update(T obj)
         {
             context.Update(obj);

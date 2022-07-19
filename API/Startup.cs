@@ -14,6 +14,7 @@ using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using API.Helpers;
+using System.Security.Claims;
 
 namespace API
 {
@@ -32,6 +33,7 @@ namespace API
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
 
 
             services.AddControllers();
@@ -75,6 +77,14 @@ namespace API
                      };
                  });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Supplier", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, "Supplier"));
+
+                options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+            });
+
 
             services.AddAutoMapper(typeof(MappingProfiles));
                               
@@ -93,6 +103,7 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

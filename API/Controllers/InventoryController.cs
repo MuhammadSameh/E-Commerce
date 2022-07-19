@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -60,6 +61,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy ="Supplier")]
         public ActionResult<Category> AddInventory([FromBody] Inventory inventory)
         {
             repo.Add(inventory);
@@ -67,6 +69,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}")]
+        [Authorize(Policy = "Supplier")]
         public ActionResult<Category> UpdateInventory(int id, [FromBody] InventoryDto inventoryDto)
         {
             if (id != inventoryDto.InventoryId)
@@ -85,6 +88,7 @@ namespace API.Controllers
         }
 
         [HttpPost("delete/{id}")]
+        [Authorize(Policy ="Supplier")]
         public async Task<ActionResult> DeleteInventory(int id)
         {
             Inventory inventory = await repo.GetByIdAsync(id);

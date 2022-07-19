@@ -9,6 +9,7 @@ namespace Core.Entities
     public class Cart
     {
         public int Id { get; set; }
-        public ICollection<Inventory> Inventories { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
+
     }
 }
