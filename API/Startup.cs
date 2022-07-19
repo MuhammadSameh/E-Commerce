@@ -12,6 +12,8 @@ using System.Text.Json.Serialization;
 using API.Mapper;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using API.Helpers;
 
 namespace API
 {
@@ -55,6 +57,23 @@ namespace API
                          }
 
                      ).AddEntityFrameworkStores<EcommerceContext>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "User";
+                options.DefaultChallengeScheme = "User";
+            })
+                .AddJwtBearer("User", options =>
+                 {
+
+
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         IssuerSigningKey = TokenHelper.GenerateSecretKey(Configuration),
+                         ValidateIssuer = false,
+                         ValidateAudience = false
+                     };
+                 });
 
 
             services.AddAutoMapper(typeof(MappingProfiles));
