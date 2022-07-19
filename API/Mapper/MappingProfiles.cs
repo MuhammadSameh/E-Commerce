@@ -20,6 +20,9 @@ namespace API.Mapper
 
             CreateMap<InventoryDto, Inventory>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<Cart, CartDto>();
+            CreateMap<CartItem, CartItemDto>()
+                .ForMember(dto => dto.Inventory, c => c.MapFrom(i => i.Inventory.Product.Name));
         }
 
     }

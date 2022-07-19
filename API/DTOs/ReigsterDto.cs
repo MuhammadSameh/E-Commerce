@@ -13,7 +13,6 @@ namespace API.DTOs
 
         [Compare(nameof(Password), ErrorMessage ="Passwords don't match")]
         public string PasswordConfirmation { get; set; }
-
         public string Address { get; set; }
 
     }

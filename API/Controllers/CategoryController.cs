@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -35,6 +36,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy ="Admin")]
         public ActionResult<Category> AddCategory([FromBody]CategoryDto catDto)
         {
             
@@ -45,6 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}")]
+        [Authorize(Policy = "Admin")]
         public ActionResult<Category> UpdateCategory(int id, [FromBody]CategoryDto catDto)
         {
             if(id != catDto.CategoryId)
@@ -63,6 +66,7 @@ namespace API.Controllers
         }
 
         [HttpPost("delete/{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
             Category cat = await repo.GetByIdAsync(id);
