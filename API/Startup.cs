@@ -88,7 +88,7 @@ namespace API
             {
                 opt.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
             }
             );
