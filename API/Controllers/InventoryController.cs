@@ -87,7 +87,7 @@ namespace API.Controllers
             return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Policy ="Supplier")]
         public async Task<ActionResult> DeleteInventory(int id)
         {
