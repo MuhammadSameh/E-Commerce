@@ -23,9 +23,10 @@ namespace API.Controllers
 
 
         [HttpGet("AllProducts")]
-        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetProducts(string sortBy)
+        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetProducts(string sortBy,
+            int currentPage = 1, int pageSize=20)
         {
-            IReadOnlyList<Inventory> invens = await repo.GetProducts(sortBy);
+            IReadOnlyList<Inventory> invens = await repo.GetProducts(sortBy, pageSize,currentPage);
 
             return Ok(
                 this._mapper.Map<IReadOnlyList<InventoryDto>>(invens)
@@ -35,15 +36,17 @@ namespace API.Controllers
         
 
         [HttpGet("ProductsByBrand/{brandName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName, string sortBy)
+        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName, string sortBy,
+            int currentPage = 1, int pageSize = 20)
         {
-            return Ok(await repo.GetInventoryByBrand(brandName, sortBy));
+            return Ok(await repo.GetInventoryByBrand(brandName, sortBy,pageSize,currentPage));
         }
 
         [HttpGet("ProductsByCategory/{categoryName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName, string sortBy)
+        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName, string sortBy
+            , int pageSize=20, int currentPage = 1)
         {
-            return Ok(await repo.GetInventoryByCategory(categoryName, sortBy));
+            return Ok(await repo.GetInventoryByCategory(categoryName, sortBy,pageSize,currentPage));
         }
 
         // CRUD

@@ -37,6 +37,13 @@ namespace API.Controllers
             var cartDto = mapper.Map<CartDto>(cart);
             return Ok(cartDto);
         }
+        [HttpGet]
+        public async Task<ActionResult> AddCart()
+        {
+            var cart = new Cart();
+            await repository.Add(cart);
+            return CreatedAtAction(nameof(GetCart),new {cartId = cart.Id}, cart);
+        }
 
         [HttpPost]
         [Route("{cartId}/{inventoryId}")]
