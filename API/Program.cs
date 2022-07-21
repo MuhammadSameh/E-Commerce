@@ -25,7 +25,7 @@ namespace API
                 {
                     var context = services.GetRequiredService<EcommerceContext>();
                     await context.Database.MigrateAsync();
-                    await EcommereceContextSeed.SeedAsync(context, loggerFactory);
+                    //await EcommereceContextSeed.SeedAsync(context, loggerFactory);
                 }
                 catch (Exception ex)
                 {
