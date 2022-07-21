@@ -9,9 +9,9 @@ namespace Core.Interfaces
 {
     public interface IInventoryRepository: IBaseRepository<Inventory>
     {
-        public Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName);
-        public Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName);
+        public Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy);
+        public Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy);
 
-        public Task<IReadOnlyList<Inventory>> GetProducts();
+        public Task<IReadOnlyList<Inventory>> GetProducts(string sortBy);
     }
 }
