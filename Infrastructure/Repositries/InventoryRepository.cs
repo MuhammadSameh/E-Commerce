@@ -19,24 +19,29 @@ namespace Infrastructure.Repositries
             this.context = context;
         }
 
-        public async Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy)
+        public async Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy,
+            int pageSize, int currentPage)
         {
             var query = context.Inventories.Where(i => i.Product.Brand.Name == brandName);
-            return await AddSort(query, sortBy).ToListAsync();
+            var sortedQuery = AddSort(query,sortBy);
+
+            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
 
         }
 
-        public async Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy)
+        public async Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy
+            , int pageSize, int currentPage)
         {
             var query = context.Inventories
                 .Where(i => i.Product.Category.Name == categoryName);
 
-            return await AddSort(query,sortBy).ToListAsync();
+            var sortedQuery =  AddSort(query,sortBy);
+            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
 
         }
 
 
-        public async Task<IReadOnlyList<Inventory>> GetProducts(string sortBy)
+        public async Task<IReadOnlyList<Inventory>> GetProducts(string sortBy, int pageSize, int currentPage)
         {
             var query = context.Inventories
                 .Include(c => c.Product)
@@ -44,7 +49,8 @@ namespace Infrastructure.Repositries
                 .Include(b => b.Medias)
                 .Include(m => m.Product.Brand);
 
-          return await AddSort(query, sortBy).ToListAsync();
+            var sortedQuery = AddSort(query, sortBy);
+            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
 
 
         }
@@ -73,6 +79,12 @@ namespace Infrastructure.Repositries
                     }
                     break;
             }
+            return query;
+        }
+
+        private IQueryable<Inventory> AddPagination(IQueryable<Inventory> query,  int pageSize, int currentPage)
+        {
+            query.Skip((currentPage-1)*pageSize).Take(pageSize);
             return query;
         }
     }

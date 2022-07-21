@@ -9,9 +9,10 @@ namespace Core.Interfaces
 {
     public interface IInventoryRepository: IBaseRepository<Inventory>
     {
-        public Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy);
-        public Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy);
+        public Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy
+            , int pageSize,int currentPage);
+        public Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy, int pageSize, int currentPage);
 
-        public Task<IReadOnlyList<Inventory>> GetProducts(string sortBy);
+        public Task<IReadOnlyList<Inventory>> GetProducts(string sortBy, int pageSize, int currentPage);
     }
 }
