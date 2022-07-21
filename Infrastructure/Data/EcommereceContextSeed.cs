@@ -63,41 +63,41 @@ namespace Infrastructure.Data
                     
                 }
 
-                if (!context.Products.Any())
-                {
-                    var productsData = File.ReadAllText("../Infrastructure/Data/MockData/ProductList.json");
-                    var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-                    foreach (var item in products)
-                    {
-                        context.Products.Add(item);
-                    }
+                //if (!context.Products.Any())
+                //{
+                //    var productsData = File.ReadAllText("../Infrastructure/Data/MockData/ProductList.json");
+                //    var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+                //    foreach (var item in products)
+                //    {
+                //        context.Products.Add(item);
+                //    }
 
-                    context.Database.OpenConnection();
-                    try
-                    {
-                        await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Products ON");
-                        await context.SaveChangesAsync();
-                        await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Products OFF");
-                    }
-                    finally
-                    {
-                        context.Database.CloseConnection();
-                    }
+                //    context.Database.OpenConnection();
+                //    try
+                //    {
+                //        await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Products ON");
+                //        await context.SaveChangesAsync();
+                //        await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Products OFF");
+                //    }
+                //    finally
+                //    {
+                //        context.Database.CloseConnection();
+                //    }
                     
-                }
+                //}
 
-                if (!context.Inventories.Any())
-                {
-                    var inventoryData = File.ReadAllText("../Infrastructure/Data/MockData/Inventory.json");
-                    var inventory = JsonSerializer.Deserialize<List<Inventory>>(inventoryData);
-                    foreach (var item in inventory)
-                    {
-                        context.Inventories.Add(item);
-                    }
+                //if (!context.Inventories.Any())
+                //{
+                //    var inventoryData = File.ReadAllText("../Infrastructure/Data/MockData/Inventory.json");
+                //    var inventory = JsonSerializer.Deserialize<List<Inventory>>(inventoryData);
+                //    foreach (var item in inventory)
+                //    {
+                //        context.Inventories.Add(item);
+                //    }
          
-                        await context.SaveChangesAsync();
+                //        await context.SaveChangesAsync();
                     
-                }
+                //}
 
             }
             catch (Exception ex)
