@@ -14,6 +14,8 @@ namespace API.Mapper
                 x => x.MapFrom(i => i.Medias.Select(x => x.PicUrl))
                 );
 
+            CreateMap<Brand, BrandDto>();
+
             CreateMap<Product, ProductDto>()
                 .ForMember(pdto => pdto.Brand, p => p.MapFrom(i => i.Brand.Name))
                 .ForMember(pdto => pdto.Category, p => p.MapFrom(i => i.Category.Name));

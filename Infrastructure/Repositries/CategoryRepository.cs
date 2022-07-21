@@ -21,7 +21,7 @@ namespace Infrastructure.Repositries
 
         public async Task<Category> GetCategoryById(int id)
         {
-            return await context.Categories.Include(p => p.ParentCategory).FirstOrDefaultAsync(i => i.CategoryId == id);
+            return await context.Categories.Include(p => p.ParentCategory).Include(c => c.Brands).FirstOrDefaultAsync(i => i.CategoryId == id);
            
         }
 

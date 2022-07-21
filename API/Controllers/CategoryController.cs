@@ -35,6 +35,20 @@ namespace API.Controllers
             return Ok(await repo.GetCategoryById(id));
         }
 
+        [HttpGet]
+        [Route("topbrands")]
+        public async Task<ActionResult<Brand>> GetTopBrands(int categoryId)
+        {
+            var category = await repo.GetCategoryById(categoryId);
+            if(category == null) return NotFound("Wrong Category Id");
+            if(category.Brands == null)
+            {
+                return NotFound("No Top Brands in this category");
+            }
+           var brands = _mapper.Map<List<BrandDto>>(category.Brands);
+            return Ok(brands);
+        }
+
         [HttpPost]
         [Authorize(Policy ="Admin")]
         public ActionResult<Category> AddCategory([FromBody]CategoryDto catDto)
