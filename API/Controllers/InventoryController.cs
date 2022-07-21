@@ -21,16 +21,11 @@ namespace API.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet("AllProducts")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getAllProducts()
-        {
-            return Ok(await repo.GetAllAsync());
-        }
 
-        [HttpGet("AllProducts/test")]
-        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetProducts()
+        [HttpGet("AllProducts")]
+        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetProducts(string sortBy)
         {
-            IReadOnlyList<Inventory> invens = await repo.GetProducts();
+            IReadOnlyList<Inventory> invens = await repo.GetProducts(sortBy);
 
             return Ok(
                 this._mapper.Map<IReadOnlyList<InventoryDto>>(invens)
@@ -40,15 +35,15 @@ namespace API.Controllers
         
 
         [HttpGet("ProductsByBrand/{brandName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName)
+        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName, string sortBy)
         {
-            return Ok(await repo.GetInventoryByBrand(brandName));
+            return Ok(await repo.GetInventoryByBrand(brandName, sortBy));
         }
 
         [HttpGet("ProductsByCategory/{categoryName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName)
+        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName, string sortBy)
         {
-            return Ok(await repo.GetInventoryByCategory(categoryName));
+            return Ok(await repo.GetInventoryByCategory(categoryName, sortBy));
         }
 
         // CRUD

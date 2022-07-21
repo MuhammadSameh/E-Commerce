@@ -19,36 +19,61 @@ namespace Infrastructure.Repositries
             this.context = context;
         }
 
-        public async Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName)
+        public async Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy)
         {
-            return await context.Inventories.Where(i => i.Product.Brand.Name == brandName)
-                .ToListAsync();
+            var query = context.Inventories.Where(i => i.Product.Brand.Name == brandName);
+            return await AddSort(query, sortBy).ToListAsync();
+
         }
 
-        public async Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName)
+        public async Task<IReadOnlyList<Inventory>> GetInventoryByCategory(string categoryName, string sortBy)
         {
-            return await context.Inventories
-                .Where(i => i.Product.Category.Name == categoryName).ToListAsync();
+            var query = context.Inventories
+                .Where(i => i.Product.Category.Name == categoryName);
+
+            return await AddSort(query,sortBy).ToListAsync();
+
         }
 
-        //public async Task<IReadOnlyList<Product>> GetProducts()
-        //{
-        //    return await context.Products
-        //        .Include(c => c.Category)
-        //        .Include(b => b.Brand)
-        //        .Include(m => m.Medias).ToListAsync();
-        //}
 
-        public async Task<IReadOnlyList<Inventory>> GetProducts()
+        public async Task<IReadOnlyList<Inventory>> GetProducts(string sortBy)
         {
-            return await context.Inventories
+            var query = context.Inventories
                 .Include(c => c.Product)
                 .Include(b => b.Product.Category)
                 .Include(b => b.Medias)
-                .Include(m => m.Product.Brand)
-                .ToListAsync();
+                .Include(m => m.Product.Brand);
+
+          return await AddSort(query, sortBy).ToListAsync();
 
 
+        }
+
+        private IQueryable<Inventory> AddSort(IQueryable<Inventory> query, string sortBy)
+        {
+            switch (sortBy)
+            {
+                case "priceAsc":
+                    {
+                        query
+                  .OrderBy(inv => inv.Price);
+
+                    }
+                    break;
+
+                case "priceDesc":
+                    {
+                        query.OrderByDescending(inv => inv.Price);  
+                    }
+                    break;
+
+                default:
+                    {
+                        query.OrderByDescending(inv => inv.CreatedDate);
+                    }
+                    break;
+            }
+            return query;
         }
     }
 }
