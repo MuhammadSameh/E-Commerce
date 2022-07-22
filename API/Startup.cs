@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using API.Helpers;
 using System.Security.Claims;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace API
 {
@@ -108,6 +110,12 @@ namespace API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Assets")),
+                RequestPath = "/Assets"
+            });
 
             app.UseRouting();
             app.UseCors();
