@@ -22,7 +22,10 @@ namespace Infrastructure.Repositries
         public async Task<IReadOnlyList<Inventory>> GetInventoryByBrand(string brandName, string sortBy,
             int pageSize, int currentPage)
         {
-            var query = context.Inventories.Where(i => i.Product.Brand.Name == brandName);
+            var query = context.Inventories.Where(i => i.Product.Brand.Name == brandName).Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
             var sortedQuery = AddSort(query,sortBy);
 
             return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
@@ -33,7 +36,10 @@ namespace Infrastructure.Repositries
             , int pageSize, int currentPage)
         {
             var query = context.Inventories
-                .Where(i => i.Product.Category.Name == categoryName);
+                .Where(i => i.Product.Category.Name == categoryName).Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
 
             var sortedQuery =  AddSort(query,sortBy);
             return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
