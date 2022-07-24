@@ -39,14 +39,16 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName, string sortBy,
             int currentPage = 1, int pageSize = 20)
         {
-            return Ok(await repo.GetInventoryByBrand(brandName, sortBy,pageSize,currentPage));
+            var invens = await repo.GetInventoryByBrand(brandName, sortBy, pageSize, currentPage);
+            return Ok(_mapper.Map<IReadOnlyList<InventoryDto>>(invens));
         }
 
         [HttpGet("ProductsByCategory/{categoryName}")]
         public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName, string sortBy
             , int pageSize=20, int currentPage = 1)
         {
-            return Ok(await repo.GetInventoryByCategory(categoryName, sortBy,pageSize,currentPage));
+            var invens = await repo.GetInventoryByCategory(categoryName, sortBy, pageSize, currentPage);
+            return Ok(_mapper.Map<IReadOnlyList<InventoryDto>>(invens));
         }
 
         // CRUD
