@@ -67,7 +67,7 @@ namespace Infrastructure.Repositries
             {
                 case "priceAsc":
                     {
-                        query
+                       query = query
                   .OrderBy(inv => inv.Price);
 
                     }
@@ -75,13 +75,13 @@ namespace Infrastructure.Repositries
 
                 case "priceDesc":
                     {
-                        query.OrderByDescending(inv => inv.Price);  
+                        query =query.OrderByDescending(inv => inv.Price);  
                     }
                     break;
 
                 default:
                     {
-                        query.OrderByDescending(inv => inv.CreatedDate);
+                        query = query.OrderByDescending(inv => inv.CreatedDate);
                     }
                     break;
             }
@@ -90,7 +90,7 @@ namespace Infrastructure.Repositries
 
         private IQueryable<Inventory> AddPagination(IQueryable<Inventory> query,  int pageSize, int currentPage)
         {
-            query.Skip((currentPage-1)*pageSize).Take(pageSize);
+            query = query.Skip((currentPage-1)*pageSize).Take(pageSize);
             return query;
         }
     }
