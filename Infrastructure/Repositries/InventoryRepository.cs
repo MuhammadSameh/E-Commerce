@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -92,6 +93,12 @@ namespace Infrastructure.Repositries
         {
             query = query.Skip((currentPage-1)*pageSize).Take(pageSize);
             return query;
+        }
+
+        public async Task<int> GetCount(Expression<Func<Inventory, bool>> whereClause)
+        {
+            int count = await context.Inventories.Where(whereClause).CountAsync();
+            return count;
         }
     }
 }
