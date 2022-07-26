@@ -1,4 +1,5 @@
 ﻿using API.DTOs;
+using API.Responses;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -14,11 +15,13 @@ namespace API.Controllers
     {
         private readonly IInventoryRepository repo;
         private readonly IMapper _mapper;
+        private readonly IBaseRepository<Product> productRepo;
 
-        public InventoryController(IInventoryRepository repo,IMapper mapper)
+        public InventoryController(IInventoryRepository repo,IMapper mapper, IBaseRepository<Product> productRepo)
         {
             this.repo = repo;
             this._mapper = mapper;
+            this.productRepo = productRepo;
         }
 
 
@@ -36,41 +39,88 @@ namespace API.Controllers
         
 
         [HttpGet("ProductsByBrand/{brandName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByBrand(string brandName, string sortBy,
+        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> getProductsByBrand(string brandName, string sortBy,
             int currentPage = 1, int pageSize = 20)
         {
             var invens = await repo.GetInventoryByBrand(brandName, sortBy, pageSize, currentPage);
-            return Ok(_mapper.Map<IReadOnlyList<InventoryDto>>(invens));
+            var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
+            int count = await repo.GetCount(inv => inv.Product.Brand.Name == brandName);
+            int totalPages = (count / pageSize);
+            if ((count % pageSize) > 0)
+                totalPages = totalPages + 1;
+
+            var paginationResponse = new PaginationResponse<IReadOnlyList<InventoryDto>>
+            {
+                Data = data,
+                PageIndex = currentPage,
+                PageSize = pageSize,
+                TotalPages = totalPages
+            };
+            return Ok(paginationResponse);
         }
 
         [HttpGet("ProductsByCategory/{categoryName}")]
-        public async Task<ActionResult<IReadOnlyList<Inventory>>> getProductsByCategory(string categoryName, string sortBy
+        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> getProductsByCategory(string categoryName, string sortBy
             , int pageSize=20, int currentPage = 1)
         {
             var invens = await repo.GetInventoryByCategory(categoryName, sortBy, pageSize, currentPage);
-            return Ok(_mapper.Map<IReadOnlyList<InventoryDto>>(invens));
+            var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
+            int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
+            int totalPages = (count / pageSize);
+            if ((count % pageSize) > 0)
+                totalPages = totalPages + 1;
+            var paginationResponse = new PaginationResponse<IReadOnlyList<InventoryDto>>
+            {
+                Data = data,
+                PageIndex = currentPage,
+                PageSize = pageSize,
+                TotalPages = totalPages
+            };
+            return Ok(paginationResponse);
         }
 
         // CRUD
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetInventory(int id)
+        public async Task<ActionResult<InventoryDto>> GetInventory(int id)
         {
-
-            return Ok(await repo.GetByIdAsync(id));
+            var inventory = await repo.GetByIdAsync(id);
+            if(inventory == null) { return NotFound("Invalid Id"); }
+            var inventoryDto = _mapper.Map<InventoryDto>(inventory);
+            return Ok(inventoryDto);
         }
 
         [HttpPost]
-        [Authorize(Policy ="Supplier")]
-        public ActionResult<Category> AddInventory([FromBody] Inventory inventory)
+        [Route("addInventory")]
+        [Authorize(Policy = "Supplier")]
+        public async Task<ActionResult<Inventory>> AddInventory([FromBody] Inventory inventory)
         {
-            repo.Add(inventory);
+            if (inventory == null)
+            {
+                return BadRequest("Please Enter required information");
+            }
+            var product = await productRepo.GetByIdAsync(inventory.ProductId);
+            if (product == null) { return BadRequest("This product Id is invalid");}
+            await repo.Add(inventory);
             return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+        }
+
+        [HttpPost]
+        [Route("addProduct")]
+        [Authorize(Policy ="Supplier")]
+        public async Task<ActionResult> AddProduct(Product product)
+        {
+            if(product == null)
+            {
+                return BadRequest("Please Enter Required Information");
+            }
+            await productRepo.Add(product);
+            return Ok(product.ProductId);
         }
 
         [HttpPost("{id}")]
         [Authorize(Policy = "Supplier")]
-        public ActionResult<Category> UpdateInventory(int id, [FromBody] InventoryDto inventoryDto)
+        public async Task<ActionResult<Inventory>> UpdateInventory(int id, [FromBody] InventoryDto inventoryDto)
         {
             if (id != inventoryDto.InventoryId)
             {
@@ -80,6 +130,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
+            var product = await productRepo.GetByIdAsync(inventoryDto.ProductId);
+            if (product == null) { return BadRequest("This product Id is invalid"); }
 
             Inventory inventory = _mapper.Map<Inventory>(inventoryDto);
             repo.Update(inventory);
