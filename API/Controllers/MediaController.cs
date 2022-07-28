@@ -62,12 +62,12 @@ namespace API.Controllers
             }
             
             
-            return Ok(urls);
+            return Ok(new { Urls = urls });
         }
 
         [HttpPost]
         [Route("add")]
-        public async  Task<ActionResult> AddMedia(Media media)
+        public async  Task<ActionResult> AddMedia([FromBody]Media media)
         {
             if(media== null) { return BadRequest(new { Error = "Invalid Data" });}
             await repo.Add(media);

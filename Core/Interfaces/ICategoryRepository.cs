@@ -10,6 +10,7 @@ namespace Core.Interfaces
     public interface ICategoryRepository: IBaseRepository<Category>
     {
         Task<IReadOnlyList<Category>> GetSubCategoryByParentName(string parentName);
+        Task<IReadOnlyList<Category>> GetSubCategoryByParentId(int parentId);
         Task<IReadOnlyList<Category>> GetParentCategories();
 
         Task<Category> GetCategoryById(int id);

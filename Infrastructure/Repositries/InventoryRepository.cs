@@ -100,5 +100,11 @@ namespace Infrastructure.Repositries
             int count = await context.Inventories.Where(whereClause).CountAsync();
             return count;
         }
+
+        public async Task<IReadOnlyList<Inventory>> GetInventoryForSupplier(int supplierId)
+        {
+            return await context.Inventories.Include(i => i.Medias).Include(i => i.Product).ThenInclude(p => p.Category).
+                Include(i => i.Product.Brand).Where(i => i.Product.SupplierInfo.Id == supplierId).ToListAsync();
+        }
     }
 }

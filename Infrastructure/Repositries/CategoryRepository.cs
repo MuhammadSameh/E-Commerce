@@ -30,6 +30,11 @@ namespace Infrastructure.Repositries
             return await context.Categories.Where(c => c.ParentId == null).ToListAsync();
         }
 
+        public async Task<IReadOnlyList<Category>> GetSubCategoryByParentId(int parentId)
+        {
+            return await context.Categories.Where(c => c.ParentCategory.CategoryId == parentId).ToListAsync();
+        }
+
         public async Task<IReadOnlyList<Category>> GetSubCategoryByParentName(string parentName)
         {
             return await context.Categories.Where(c => c.ParentCategory.Name == parentName).ToListAsync();

@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("topbrands")]
+        [Route("topbrands/{categoryId}")]
         public async Task<ActionResult<Brand>> GetTopBrands(int categoryId)
         {
             var category = await repo.GetCategoryById(categoryId);
@@ -110,6 +110,11 @@ namespace API.Controllers
             return Ok(await repo.GetSubCategoryByParentName(parentName));
         }
 
+        [HttpGet("subcategoriesByparent/{parentId}")]
+        public async Task<ActionResult<IReadOnlyList<Category>>> GetSubCategoriesByParent(int parentId)
+        {
+            return Ok(await repo.GetSubCategoryByParentId(parentId));
+        }
 
     }
 }

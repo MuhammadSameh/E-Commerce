@@ -16,5 +16,7 @@ namespace Core.Interfaces
 
         public Task<IReadOnlyList<Inventory>> GetProducts(string sortBy, int pageSize, int currentPage);
         public Task<int> GetCount(Expression<Func<Inventory, bool>> whereClause);
+
+        public Task<IReadOnlyList<Inventory>> GetInventoryForSupplier(int supplierId);
     }
 }

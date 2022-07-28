@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using API.Helpers;
 using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,16 +19,18 @@ namespace API.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
+        private readonly IBaseRepository<SupplierInfo> infoRepo;
 
-        public SupplierController(UserManager<User> userManager, IConfiguration configuration)
+        public SupplierController(UserManager<User> userManager, IConfiguration configuration, IBaseRepository<SupplierInfo> infoRepo)
         {
             this.userManager = userManager;
             this.configuration = configuration;
+            this.infoRepo = infoRepo;
         }
 
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<string>> Register(ReigsterDto registerDto)
+        public async Task<ActionResult<int>> Register(ReigsterDto registerDto)
         {
             var supplier = new User
             {
@@ -42,13 +45,16 @@ namespace API.Controllers
             {
                 return BadRequest(result.Errors);
             }
+            
+            var supplierInfo = new SupplierInfo { UserId = supplier.Id };
+           await infoRepo.Add(supplierInfo);
             await userManager.AddClaimsAsync(supplier, new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, supplier.Id),
-                new Claim(ClaimTypes.Role, "Supplier")
+                new Claim(ClaimTypes.Role, "Supplier"),
+                new Claim("SupplierInfo", supplierInfo.Id.ToString())
             });
-
-            return supplier.Id;
+            return supplierInfo.Id;
 
         }
 
@@ -65,8 +71,16 @@ namespace API.Controllers
             var key = TokenHelper.GenerateSecretKey(configuration);
             var securityToken = TokenHelper.GenerateToken(claims, DateTime.Now.AddDays(1),key);
             var tokenHandler = new JwtSecurityTokenHandler();
+            int supplierInfoId = 0;
+            foreach (var claim in claims)
+            {
+                if(claim.Type == "SupplierInfo")
+                {
+                    supplierInfoId = int.Parse(claim.Value);
+                }
+            }
             return Ok(
-                new { Token = tokenHandler.WriteToken(securityToken), ExpirtyDate = securityToken.ValidTo}
+                new { Token = tokenHandler.WriteToken(securityToken),SupplierInfoId= supplierInfoId ,ExpirtyDate = securityToken.ValidTo}
                 );
 
 

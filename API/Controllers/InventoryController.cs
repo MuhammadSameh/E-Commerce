@@ -93,7 +93,7 @@ namespace API.Controllers
         [HttpPost]
         [Route("addInventory")]
         [Authorize(Policy = "Supplier")]
-        public async Task<ActionResult<Inventory>> AddInventory([FromBody] Inventory inventory)
+        public async Task<ActionResult<InventoryDto>> AddInventory([FromBody] Inventory inventory)
         {
             if (inventory == null)
             {
@@ -102,20 +102,23 @@ namespace API.Controllers
             var product = await productRepo.GetByIdAsync(inventory.ProductId);
             if (product == null) { return BadRequest("This product Id is invalid");}
             await repo.Add(inventory);
-            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+           var inventoryDto = _mapper.Map<InventoryDto>(inventory);
+            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventoryDto);
         }
+
+
 
         [HttpPost]
         [Route("addProduct")]
         [Authorize(Policy ="Supplier")]
-        public async Task<ActionResult> AddProduct(Product product)
+        public async Task<ActionResult> AddProduct([FromBody]Product product)
         {
             if(product == null)
             {
                 return BadRequest("Please Enter Required Information");
             }
             await productRepo.Add(product);
-            return Ok(product.ProductId);
+            return Ok(new { id = product.ProductId });
         }
 
         [HttpPost("{id}")]
@@ -154,6 +157,15 @@ namespace API.Controllers
             repo.Delete(inventory);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("productsForSupplier/{supplierInfoId}")]
+        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetInventoryForSupplier(int supplierInfoId)
+        {
+            var invens = await repo.GetInventoryForSupplier(supplierInfoId);
+            var invensDto = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
+            return Ok(invensDto);
         }
 
 
