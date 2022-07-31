@@ -45,7 +45,8 @@ namespace API.Controllers
             await userManager.AddClaimsAsync(customer, new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, customer.Id),
-                new Claim(ClaimTypes.Role, "Customer")
+                new Claim(ClaimTypes.Role, "Customer"),
+                new Claim("CartId", $"{customer.CartId}")
             });
 
             return customer.Id;
@@ -65,8 +66,17 @@ namespace API.Controllers
             var key = TokenHelper.GenerateSecretKey(configuration);
             var securityToken = TokenHelper.GenerateToken(claims, DateTime.Now.AddDays(1),key);
             var tokenHandler = new JwtSecurityTokenHandler();
+
+            int cartId = 0;
+            foreach (var claim in claims)
+            {
+                if (claim.Type == "CartId")
+                {
+                    cartId = int.Parse(claim.Value);
+                }
+            }
             return Ok(
-                new { Token = tokenHandler.WriteToken(securityToken), ExpirtyDate = securityToken.ValidTo}
+                new { Token = tokenHandler.WriteToken(securityToken),CartId=cartId, ExpirtyDate = securityToken.ValidTo}
                 );
 
 
