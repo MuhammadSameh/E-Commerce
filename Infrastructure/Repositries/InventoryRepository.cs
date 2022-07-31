@@ -62,6 +62,18 @@ namespace Infrastructure.Repositries
 
         }
 
+        public async Task<Inventory> GetProduct(int id)
+        {
+            return await context.Inventories
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand).Where(i => i.InventoryId == id).FirstOrDefaultAsync();
+
+
+
+
+        }
         private IQueryable<Inventory> AddSort(IQueryable<Inventory> query, string sortBy)
         {
             switch (sortBy)

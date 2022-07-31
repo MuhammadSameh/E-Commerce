@@ -6,6 +6,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -146,13 +147,23 @@ namespace API.Controllers
         [Authorize(Policy ="Supplier")]
         public async Task<ActionResult> DeleteInventory(int id)
         {
-            Inventory inventory = await repo.GetByIdAsync(id);
+            Inventory inventory = await repo.GetProduct(id);
 
             if (inventory is null)
                 return NotFound();
             if (inventory.InventoryId != id)
                 return NotFound();
 
+            foreach (var media in inventory.Medias)
+            {
+                var fileUrl = media.PicUrl;
+                string[] seperators = new string[] { "//", "/" };
+                var arr = fileUrl.Split(seperators, System.StringSplitOptions.None);
+                var fileName = arr[arr.Length - 1];
+                var fullFilePath = Directory.GetCurrentDirectory() + @"\Assets\Images\" + fileName;
+                System.IO.File.Delete(fullFilePath);
+
+            }
 
             repo.Delete(inventory);
 
