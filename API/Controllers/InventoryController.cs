@@ -85,7 +85,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<InventoryDto>> GetInventory(int id)
         {
-            var inventory = await repo.GetByIdAsync(id);
+            var inventory = await repo.GetProduct(id);
             if(inventory == null) { return NotFound("Invalid Id"); }
             var inventoryDto = _mapper.Map<InventoryDto>(inventory);
             return Ok(inventoryDto);
