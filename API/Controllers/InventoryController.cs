@@ -246,7 +246,7 @@ namespace API.Controllers
             };
             return Ok(paginationResponse);
         }
-        [HttpGet("GetInventoriesByProduct/{id}")]
+        [HttpGet("GetInventoriesByProduct/{productId}")]
 
         public async Task<ActionResult<InventoryDto>> GetInventoriesByProduct(int productId)
         {
