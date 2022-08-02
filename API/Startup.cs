@@ -35,6 +35,7 @@ namespace API
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
+            services.AddScoped<IMediaRepository, MediaRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
 
 

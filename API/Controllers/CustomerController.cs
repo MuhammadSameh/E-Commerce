@@ -49,7 +49,7 @@ namespace API.Controllers
                 new Claim("CartId", $"{customer.CartId}")
             });
 
-            return customer.Id;
+            return Ok(new { id=customer.Id });
 
         }
 

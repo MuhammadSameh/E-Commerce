@@ -47,10 +47,10 @@ namespace Infrastructure.Repositries
              await context.SaveChangesAsync();
         }
 
-        public void Update(T obj)
+        public async Task Update(T obj)
         {
-            context.Update(obj);
-            context.SaveChanges();
+            context.Entry(obj).State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Core.Interfaces
 {
     public interface IMediaRepository : IBaseRepository<Media>
     {
-
+        public Task DeleteByUrl(string url);
     }
 }

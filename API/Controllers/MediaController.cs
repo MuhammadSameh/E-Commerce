@@ -13,9 +13,9 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class MediaController : Controller
     {
-        private readonly IBaseRepository<Media> repo;
+        private readonly IMediaRepository repo;
 
-        public MediaController(IBaseRepository<Media> repo)
+        public MediaController(IMediaRepository repo)
         {
             this.repo = repo;
         }
@@ -72,6 +72,19 @@ namespace API.Controllers
             if(media== null) { return BadRequest(new { Error = "Invalid Data" });}
             await repo.Add(media);
             return Ok(media.Id);
+        }
+
+        [HttpPost]
+        [Route("Delete")]
+        public async Task<ActionResult> DeleteMedia([FromBody]string url)
+        {
+            await repo.DeleteByUrl(url);
+            string[] seperators = new string[] { "//", "/" };
+            var arr = url.Split(seperators, System.StringSplitOptions.None);
+            var fileName = arr[arr.Length - 1];
+            var fullFilePath = Directory.GetCurrentDirectory() + @"\Assets\Images\" + fileName;
+            System.IO.File.Delete(fullFilePath);
+            return NoContent();
         }
     }
 }

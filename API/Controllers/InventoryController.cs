@@ -17,12 +17,14 @@ namespace API.Controllers
         private readonly IInventoryRepository repo;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Product> productRepo;
+        private readonly IBaseRepository<Media> mediaRepo;
 
         public InventoryController(IInventoryRepository repo,IMapper mapper, IBaseRepository<Product> productRepo)
         {
             this.repo = repo;
             this._mapper = mapper;
             this.productRepo = productRepo;
+            this.mediaRepo = mediaRepo;
         }
 
 
@@ -124,23 +126,25 @@ namespace API.Controllers
 
         [HttpPost("{id}")]
         [Authorize(Policy = "Supplier")]
-        public async Task<ActionResult<Inventory>> UpdateInventory(int id, [FromBody] InventoryDto inventoryDto)
+        public async Task<ActionResult<InventoryDto>> UpdateInventory(int id, [FromBody] Inventory inventory)
         {
-            if (id != inventoryDto.InventoryId)
+            if (id != inventory.InventoryId)
             {
                 return BadRequest();
             }
-            else if (inventoryDto is null)
+            else if (inventory is null)
             {
                 return NotFound();
             }
-            var product = await productRepo.GetByIdAsync(inventoryDto.ProductId);
+
+
+            var product = await productRepo.GetByIdAsync(inventory.ProductId);
             if (product == null) { return BadRequest("This product Id is invalid"); }
 
-            Inventory inventory = _mapper.Map<Inventory>(inventoryDto);
-            repo.Update(inventory);
+            await repo.Update(inventory);
+            var inventoryDto = _mapper.Map<InventoryDto>(inventory);
 
-            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventoryDto);
         }
 
         [HttpDelete("delete/{id}")]

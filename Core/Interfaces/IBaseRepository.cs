@@ -12,7 +12,7 @@ namespace Core.Interfaces
         Task<T> GetByIdAsync(int id);
         Task Add(T obj);
         Task Save();
-        void Update(T obj);
+        Task Update(T obj);
         void Delete(T obj);
     }
 }

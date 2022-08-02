@@ -54,6 +54,9 @@ namespace Infrastructure.Data
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.Now;
                         break;
+                    case EntityState.Modified:
+                        entry.Entity.CreatedDate = DateTime.Now;
+                        break;
                 }
             }
             return base.SaveChangesAsync(cancellationToken);
