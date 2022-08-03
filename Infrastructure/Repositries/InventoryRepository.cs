@@ -175,7 +175,12 @@ namespace Infrastructure.Repositries
 
         public IQueryable<Inventory> FiltrationByPrice(IQueryable<Inventory> query, decimal PriceMin, decimal PriceMax)
         {
-            var outQuery = query.Where(d => d.Price > PriceMin&& d.Price<PriceMax);
+            var outQuery = query
+                .Where(b => b.Price >PriceMin&&b.Price<PriceMax)
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
             return outQuery;
         }
     }
