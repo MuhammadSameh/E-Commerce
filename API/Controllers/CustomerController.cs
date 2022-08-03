@@ -67,16 +67,9 @@ namespace API.Controllers
             var securityToken = TokenHelper.GenerateToken(claims, DateTime.Now.AddDays(1),key);
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            int cartId = 0;
-            foreach (var claim in claims)
-            {
-                if (claim.Type == "CartId")
-                {
-                    cartId = int.Parse(claim.Value);
-                }
-            }
+            
             return Ok(
-                new { Token = tokenHandler.WriteToken(securityToken),CartId=cartId, ExpirtyDate = securityToken.ValidTo}
+                new { Token = tokenHandler.WriteToken(securityToken),CartId=customer.CartId, ExpirtyDate = securityToken.ValidTo}
                 );
 
 

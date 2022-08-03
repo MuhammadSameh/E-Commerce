@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Core.Entities.OrderRelatedEntities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Core.Entities
         public string Address { get; set; }
         public int CartId { get; set; }
         public Cart Cart { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

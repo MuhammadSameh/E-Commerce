@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.OrderRelatedEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,9 @@ namespace Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<SupplierInfo> supplierInfos { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; } 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

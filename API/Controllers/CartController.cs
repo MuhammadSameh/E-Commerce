@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("{cartId}/{inventoryId}")]
+        [Route("{cartId}/{inventoryId}/{quantity}")]
         public async Task<ActionResult> AddToCart(int cartId, int inventoryId, int quantity)
         {
             var cartItem = new CartItem { Quantity = quantity, CartId = cartId, InventoryId = inventoryId };
