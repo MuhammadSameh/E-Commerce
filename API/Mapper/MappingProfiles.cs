@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using AutoMapper;
 using Core.Entities;
+using Core.Entities.OrderRelatedEntities;
 using System.Linq;
 
 namespace API.Mapper
@@ -25,6 +26,8 @@ namespace API.Mapper
             CreateMap<Cart, CartDto>();
             CreateMap<CartItem, CartItemDto>()
                 .ForMember(dto => dto.Inventory, c => c.MapFrom(i => i.Inventory.Product.Name));
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderItem, orderItemDto>();
         }
 
     }

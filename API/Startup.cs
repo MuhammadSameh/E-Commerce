@@ -37,7 +37,7 @@ namespace API
             services.AddScoped<IInventoryRepository, InventoryRepository>();
             services.AddScoped<IMediaRepository, MediaRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
-
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
