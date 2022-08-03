@@ -207,7 +207,7 @@ namespace API.Controllers
         {
             var inventory = await repo.GetInventoriesByProduct(productId);
             if (inventory == null) { return NotFound("Invalid Id"); }
-            var inventoryDto = _mapper.Map<InventoryDto>(inventory);
+            var inventoryDto = _mapper.Map<List<InventoryDto>>(inventory);
             return Ok(inventoryDto);
         }
     }
