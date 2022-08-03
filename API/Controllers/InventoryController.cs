@@ -185,11 +185,11 @@ namespace API.Controllers
 
         ///Filtration 
         ///
-        [HttpGet("FiltrationByPrice/{PriceMin}/{PriceMax}")]
-        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> FiltrationByPrice(string categoryName, decimal PriceMin,decimal PriceMax, string sortBy
-            , int pageSize = 20, int currentPage = 1)
+        [HttpGet("Filtration")]
+        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> Filtration(string categoryName, string sortBy, string? color,
+            int brandId, decimal PriceMin, decimal PriceMax, int pageSize = 20, int currentPage = 1)
         {
-            var invens = await repo.FiltrationByPrice(categoryName,sortBy, pageSize,currentPage,PriceMin,PriceMax);
+            var invens = await repo.Filtration(categoryName,sortBy, pageSize,currentPage,color,brandId,PriceMin,PriceMax);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
             int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
             int totalPages = (count / pageSize);
@@ -206,53 +206,12 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("FiltrationByBrand/{brand}")]
-        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> FiltrationByBrand(string categoryName,int brandId, string sortBy
-           , int pageSize = 20, int currentPage = 1)
-        {
-            var invens = await repo.FiltrationByBrand(categoryName,sortBy, pageSize, currentPage,brandId);
-            var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
-            int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
-            int totalPages = (count / pageSize);
-            if ((count % pageSize) > 0)
-                totalPages = totalPages + 1;
-            var paginationResponse = new PaginationResponse<IReadOnlyList<InventoryDto>>
-            {
-                Data = data,
-                PageIndex = currentPage,
-                PageSize = pageSize,
-                TotalPages = totalPages
-            };
-            return Ok(paginationResponse);
-        }
-
-
-        [HttpGet("FiltrationByColor/{color}")]
-        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> FiltrationByColor(string categoryName,string color, string sortBy
-           , int pageSize = 20, int currentPage = 1)
-        {
-            var invens = await repo.FiltrationByColor(categoryName, sortBy, pageSize, currentPage, color);
-            var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
-            int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
-            int totalPages = (count / pageSize);
-            if ((count % pageSize) > 0)
-                totalPages = totalPages + 1;
-            var paginationResponse = new PaginationResponse<IReadOnlyList<InventoryDto>>
-            {
-                Data = data,
-                PageIndex = currentPage,
-                PageSize = pageSize,
-                TotalPages = totalPages
-            };
-            return Ok(paginationResponse);
-        }
         [HttpGet("GetInventoriesByProduct/{productId}")]
-
         public async Task<ActionResult<InventoryDto>> GetInventoriesByProduct(int productId)
         {
             var inventory = await repo.GetInventoriesByProduct(productId);
             if (inventory == null) { return NotFound("Invalid Id"); }
-            var inventoryDto = _mapper.Map<InventoryDto>(inventory);
+            var inventoryDto = _mapper.Map<List<InventoryDto>>(inventory);
             return Ok(inventoryDto);
         }
     }

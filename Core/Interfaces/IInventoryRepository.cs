@@ -19,9 +19,10 @@ namespace Core.Interfaces
 
         public Task<IReadOnlyList<Inventory>> GetInventoryForSupplier(int supplierId);
         public Task<Inventory> GetProduct(int id);
-        public Task<IReadOnlyList<Inventory>> FiltrationByColor(string categoryName, string sortBy, int pageSize, int currentPage, string color);
-        public Task<IReadOnlyList<Inventory>> FiltrationByBrand(string categoryName, string sortBy, int pageSize, int currentPage, int brandId);
-        public Task<IReadOnlyList<Inventory>> FiltrationByPrice(string categoryName, string sortBy, int pageSize, int currentPage, decimal PriceMin, decimal PriceMax);
+        public IQueryable<Inventory> FiltrationByColor(IQueryable<Inventory> query, string color);
+        public IQueryable<Inventory> FiltrationByBrand(IQueryable<Inventory> query, int brandId);
+        public IQueryable<Inventory> FiltrationByPrice(IQueryable<Inventory> query, decimal PriceMin, decimal PriceMax);
+        public Task<IReadOnlyList<Inventory>> Filtration(string categoryName, string sortBy, int pageSize, int currentPage, string color, int brandId, decimal PriceMin, decimal PriceMax);
         public Task<IReadOnlyList<Inventory>> GetInventoriesByProduct(int productId);
 
     }
