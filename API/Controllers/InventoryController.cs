@@ -182,12 +182,16 @@ namespace API.Controllers
         ///Filtration 
         ///
         [HttpGet("Filtration")]
-        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> Filtration(string categoryName, string sortBy, string? color,
+        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> Filtration(string categoryName, string sortBy, string color,
             int brandId, decimal PriceMin, decimal PriceMax, int pageSize = 20, int currentPage = 1)
         {
             var invens = await repo.Filtration(categoryName,sortBy, pageSize,currentPage,color,brandId,PriceMin,PriceMax);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
             int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
+            if (!string.IsNullOrEmpty(color)) { count = await repo.GetCount(inv => inv.Color == color); }
+            if (!(decimal.ToDouble(PriceMin) == 0) || !(decimal.ToDouble(PriceMax) == 0)) { count = await repo.GetCount(inv => inv.Price >PriceMin&&inv.Price<PriceMax); }
+            if (!(brandId == 0)) { count = await repo.GetCount(inv => inv.Product.BrandId==brandId); }
+
             int totalPages = (count / pageSize);
             if ((count % pageSize) > 0)
                 totalPages = totalPages + 1;
