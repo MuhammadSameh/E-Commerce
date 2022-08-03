@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Repositries
 {
@@ -119,54 +120,10 @@ namespace Infrastructure.Repositries
                 Include(i => i.Product.Brand).Where(i => i.Product.SupplierInfo.Id == supplierId).ToListAsync();
         }
 
-        public async Task<IReadOnlyList<Inventory>> FiltrationByPrice(string categoryName, string sortBy, int pageSize, int currentPage, decimal PriceMin, decimal PriceMax)
-        {
-            var query = context.Inventories
-                .Where(b=>b.Product.Category.Name == categoryName && (b.Price>PriceMin && b.Price<PriceMax))
-                .Include(c => c.Product)
-                .Include(b => b.Product.Category)
-                .Include(b => b.Medias)
-                .Include(m => m.Product.Brand);
-
-            var sortedQuery = AddSort(query, sortBy);
-            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
-
-
-        }
-        public async Task<IReadOnlyList<Inventory>> FiltrationByBrand(string categoryName, string sortBy, int pageSize, int currentPage,int brandId)
-        {
-            var query = context.Inventories
-            .Where(i => i.Product.Category.Name == categoryName&&i.Product.Brand.BrandId==brandId)
-            .Include(c => c.Product)
-            .Include(b => b.Product.Category)
-            .Include(b => b.Medias)
-            .Include(m => m.Product.Brand);
-
-            var sortedQuery = AddSort(query, sortBy);
-            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
-
-
-        }
-
-        public async Task<IReadOnlyList<Inventory>> FiltrationByColor(string categoryName,string sortBy, int pageSize, int currentPage, string color)
-        {
-            var query = context.Inventories
-                .Where(b => b.Product.Category.Name == categoryName && b.Color==color)
-                .Include(c => c.Product)
-                .Include(b => b.Product.Category)
-                .Include(b => b.Medias)
-                .Include(m => m.Product.Brand);
-
-            var sortedQuery = AddSort(query, sortBy);
-            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
-
-
-        }
-
         public async Task<IReadOnlyList<Inventory>> GetInventoriesByProduct(int productId)
         {
             var query = context.Inventories
-                .Where(b => b.ProductId==productId)
+                .Where(b => b.Product.ProductId==productId)
                 .Include(c => c.Product)
                 .Include(b => b.Product.Category)
                 .Include(b => b.Medias)
@@ -174,6 +131,52 @@ namespace Infrastructure.Repositries
 
             return await query;
 
+        }
+
+        public async Task<IReadOnlyList<Inventory>> Filtration(string categoryName, string sortBy, int pageSize, int currentPage, string color, int brandId, decimal PriceMin, decimal PriceMax)
+        {
+            var query= context.Inventories
+                .Where(b => b.Product.Category.Name == categoryName)
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
+            
+            if (!String.IsNullOrEmpty(color)) {query= (IIncludableQueryable<Inventory, Brand>)FiltrationByColor(query, color); }
+            if (!(Decimal.ToDouble(PriceMin)==0)|| !(Decimal.ToDouble(PriceMax) == 0)) { query = (IIncludableQueryable<Inventory, Brand>)FiltrationByPrice(query, PriceMin, PriceMax); }
+            if (!(brandId==0)) { query = (IIncludableQueryable<Inventory, Brand>)FiltrationByBrand(query, brandId); }
+
+
+            var sortedQuery = AddSort(query, sortBy);
+            return await AddPagination(sortedQuery, pageSize, currentPage).ToListAsync();
+        }
+
+        public IQueryable<Inventory> FiltrationByColor(IQueryable<Inventory> query, string color)
+        {
+            var outQuery = query
+                .Where(b => b.Color==color)
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
+            return outQuery;
+        }
+
+        public IQueryable<Inventory> FiltrationByBrand(IQueryable<Inventory> query, int brandId)
+        {
+            var outQuery = query
+                .Where(b => b.Product.BrandId==brandId)
+                .Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand);
+            return outQuery;
+        }
+
+        public IQueryable<Inventory> FiltrationByPrice(IQueryable<Inventory> query, decimal PriceMin, decimal PriceMax)
+        {
+            var outQuery = query.Where(d => d.Price > PriceMin&& d.Price<PriceMax);
+            return outQuery;
         }
     }
 }
