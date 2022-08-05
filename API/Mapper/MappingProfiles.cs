@@ -26,7 +26,8 @@ namespace API.Mapper
             CreateMap<Cart, CartDto>();
             CreateMap<CartItem, CartItemDto>()
                 .ForMember(dto => dto.Inventory, c => c.MapFrom(i => i.Inventory.Product.Name));
-            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderDto>()
+                .ForMember(dto => dto.Total, o => o.MapFrom(i => i.GetTotal()));
             CreateMap<OrderItem, orderItemDto>();
         }
 
