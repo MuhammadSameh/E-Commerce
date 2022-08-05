@@ -198,8 +198,8 @@ namespace API.Controllers
 
             int count = await repo.GetCount(inv =>
             (string.IsNullOrEmpty(color) || inv.Color == color) &&
-            ((decimal.ToDouble(PriceMin) == 0) || (decimal.ToDouble(PriceMax) == 0)) || inv.Price > PriceMin && inv.Price < PriceMax &&
-            (brandId == 0) || inv.Product.BrandId == brandId && inv.Product.Category.Name == categoryName);
+            (((decimal.ToDouble(PriceMin) == 0) || (decimal.ToDouble(PriceMax) == 0)) || inv.Price > PriceMin && inv.Price < PriceMax) &&
+            ((brandId == 0) || inv.Product.BrandId == brandId) && inv.Product.Category.Name == categoryName);
 
             int totalPages = (count / pageSize);
             if ((count % pageSize) > 0)
