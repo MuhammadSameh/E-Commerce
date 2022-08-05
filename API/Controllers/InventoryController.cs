@@ -191,10 +191,15 @@ namespace API.Controllers
         {
             var invens = await repo.Filtration(categoryName,sortBy, pageSize,currentPage,color,brandId,PriceMin,PriceMax);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
-            int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
-            if (!string.IsNullOrEmpty(color)) { count = await repo.GetCount(inv => inv.Color == color); }
-            if (!(decimal.ToDouble(PriceMin) == 0) || !(decimal.ToDouble(PriceMax) == 0)) { count = await repo.GetCount(inv => inv.Price >PriceMin&&inv.Price<PriceMax); }
-            if (!(brandId == 0)) { count = await repo.GetCount(inv => inv.Product.BrandId==brandId); }
+            //int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
+            //if (!string.IsNullOrEmpty(color)) { count = await repo.GetCount(inv => inv.Color == color); }
+            //if (!(decimal.ToDouble(PriceMin) == 0) || !(decimal.ToDouble(PriceMax) == 0)) { count = await repo.GetCount(inv => inv.Price >PriceMin&&inv.Price<PriceMax); }
+            //if (!(brandId == 0)) { count = await repo.GetCount(inv => inv.Product.BrandId==brandId); }
+
+            int count = await repo.GetCount(inv =>
+            (string.IsNullOrEmpty(color) || inv.Color == color) &&
+            ((decimal.ToDouble(PriceMin) == 0) || (decimal.ToDouble(PriceMax) == 0)) || inv.Price > PriceMin && inv.Price < PriceMax &&
+            (brandId == 0) || inv.Product.BrandId == brandId && inv.Product.Category.Name == categoryName);
 
             int totalPages = (count / pageSize);
             if ((count % pageSize) > 0)
