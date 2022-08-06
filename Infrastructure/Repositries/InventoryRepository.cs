@@ -183,5 +183,16 @@ namespace Infrastructure.Repositries
                 .Include(m => m.Product.Brand);
             return outQuery;
         }
+
+        public async Task<IReadOnlyList<Inventory>> GetInvenntoriesByNameAndSupplier(string name, int supplierId)
+        {
+            var invens = await context.Inventories.Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand)
+                .Where(i => i.Product.SupplierInfoId == supplierId && i.Product.Name.Contains(name))
+                .ToListAsync();
+            return invens;
+        }
     }
 }

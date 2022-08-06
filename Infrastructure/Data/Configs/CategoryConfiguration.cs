@@ -14,7 +14,7 @@ namespace Infrastructure.Data.Configs
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(c => c.CategoryId);
-            builder.Property(c => c.Name).IsRequired();
+            builder.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(c => c.CategoryId).IsRequired();
             builder.HasOne(category => category.ParentCategory).WithMany()
                 .HasForeignKey(c => c.ParentId);

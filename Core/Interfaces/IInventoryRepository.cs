@@ -25,5 +25,7 @@ namespace Core.Interfaces
         public Task<IReadOnlyList<Inventory>> Filtration(string categoryName, string sortBy, int pageSize, int currentPage, string color, int brandId, decimal PriceMin, decimal PriceMax);
         public Task<IReadOnlyList<Inventory>> GetInventoriesByProduct(int productId);
 
+        public Task<IReadOnlyList<Inventory>> GetInvenntoriesByNameAndSupplier(string name, int supplierId);
+
     }
 }

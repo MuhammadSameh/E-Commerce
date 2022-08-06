@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -69,6 +70,7 @@ namespace API.Controllers
             var invens = await repo.GetInventoryByCategory(categoryName, sortBy, pageSize, currentPage);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
             int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
+
             int totalPages = (count / pageSize);
             if ((count % pageSize) > 0)
                 totalPages = totalPages + 1;
@@ -191,10 +193,6 @@ namespace API.Controllers
         {
             var invens = await repo.Filtration(categoryName,sortBy, pageSize,currentPage,color,brandId,PriceMin,PriceMax);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
-            //int count = await repo.GetCount(inv => inv.Product.Category.Name == categoryName);
-            //if (!string.IsNullOrEmpty(color)) { count = await repo.GetCount(inv => inv.Color == color); }
-            //if (!(decimal.ToDouble(PriceMin) == 0) || !(decimal.ToDouble(PriceMax) == 0)) { count = await repo.GetCount(inv => inv.Price >PriceMin&&inv.Price<PriceMax); }
-            //if (!(brandId == 0)) { count = await repo.GetCount(inv => inv.Product.BrandId==brandId); }
 
             int count = await repo.GetCount(inv =>
             (string.IsNullOrEmpty(color) || inv.Color == color) &&
@@ -220,6 +218,16 @@ namespace API.Controllers
         {
             var inventory = await repo.GetInventoriesByProduct(productId);
             if (inventory == null) { return NotFound("Invalid Id"); }
+            var inventoryDto = _mapper.Map<List<InventoryDto>>(inventory);
+            return Ok(inventoryDto);
+        }
+
+        [HttpGet("Search/{name}")]
+        [Authorize]
+        public async Task<ActionResult<InventoryDto>> GetInventoriesByNameAndSupplier(string name)
+        {
+            var supplierId = int.Parse(User.FindFirstValue("SupplierInfo"));
+            var inventory = await repo.GetInvenntoriesByNameAndSupplier(name,supplierId);
             var inventoryDto = _mapper.Map<List<InventoryDto>>(inventory);
             return Ok(inventoryDto);
         }

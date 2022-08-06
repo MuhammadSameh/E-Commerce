@@ -13,7 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderRepository orderRepo;
@@ -44,6 +44,13 @@ namespace API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orders = await orderRepo.GetOrdersForUserAsync(userId);
             return Ok(mapper.Map<List<OrderDto>>(orders));
+        }
+
+        [HttpGet]
+        [Route("{supplierId}")]
+        public async Task<ActionResult> GetOrderRevenueForSupplier(int supplierId)
+        {
+            return Ok(await orderRepo.GetOrdersRevenueForSupplier(supplierId));
         }
 
     }

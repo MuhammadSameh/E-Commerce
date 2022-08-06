@@ -55,5 +55,12 @@ namespace Infrastructure.Repositries
                 .Include(o => o.OrderItems)
                 .Where(o => o.UserId == userId).ToListAsync();
         }
+
+        public async Task<decimal> GetOrdersRevenueForSupplier(int supplierId)
+        {
+            return await context.OrderItems
+                .Where(o => o.Inventory.Product.SupplierInfoId == supplierId)
+                .SumAsync(oi => oi.Quantity*oi.Price);
+        }
     }
 }
