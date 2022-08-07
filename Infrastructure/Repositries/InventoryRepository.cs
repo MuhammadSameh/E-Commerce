@@ -194,5 +194,16 @@ namespace Infrastructure.Repositries
                 .ToListAsync();
             return invens;
         }
+
+        public async Task<IReadOnlyList<Inventory>> GetInvenntoriesByName(string name, string sortBy, int pageSize, int currentPage)
+        {
+            var query = context.Inventories.Include(c => c.Product)
+                .Include(b => b.Product.Category)
+                .Include(b => b.Medias)
+                .Include(m => m.Product.Brand)
+                .Where(i => i.Product.Name.Contains(name));
+            var sortedQuery = AddSort(query, sortBy);
+            return await AddPagination(sortedQuery,pageSize,currentPage).ToListAsync();
+        }
     }
 }

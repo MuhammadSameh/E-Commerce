@@ -27,5 +27,7 @@ namespace Core.Interfaces
 
         public Task<IReadOnlyList<Inventory>> GetInvenntoriesByNameAndSupplier(string name, int supplierId);
 
+        public Task<IReadOnlyList<Inventory>> GetInvenntoriesByName(string name, string sortBy, int pageSize, int currentPage);
+
     }
 }

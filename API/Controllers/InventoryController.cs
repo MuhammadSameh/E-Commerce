@@ -252,5 +252,27 @@ namespace API.Controllers
             return NoContent();
 
         }
+
+        [HttpGet("SearchByName/{name}")]
+        public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> GetInventoriesByName(string name, string sortBy
+            , int pageSize = 20, int currentPage = 1)
+        {
+            
+            var inventory = await repo.GetInvenntoriesByName(name, sortBy,pageSize,currentPage);
+            var data = _mapper.Map<IReadOnlyList<InventoryDto>>(inventory);
+            int count = await repo.GetCount(inv => inv.Product.Name.Contains(name));
+
+            int totalPages = (count / pageSize);
+            if ((count % pageSize) > 0)
+                totalPages = totalPages + 1;
+            var paginationResponse = new PaginationResponse<IReadOnlyList<InventoryDto>>
+            {
+                Data = data,
+                PageIndex = currentPage,
+                PageSize = pageSize,
+                TotalPages = totalPages
+            };
+            return Ok(paginationResponse);
+        }
     }
 }
