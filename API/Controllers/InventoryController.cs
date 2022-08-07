@@ -191,7 +191,7 @@ namespace API.Controllers
         public async Task<ActionResult<PaginationResponse<IReadOnlyList<InventoryDto>>>> Filtration(string categoryName, string sortBy, string color,
             int brandId, decimal PriceMin, decimal PriceMax, int pageSize = 20, int currentPage = 1)
         {
-            var invens = await repo.Filtration(categoryName,sortBy, pageSize,currentPage,color,brandId,PriceMin,PriceMax);
+            var invens = await repo.Filtration(categoryName, sortBy, pageSize, currentPage, color, brandId, PriceMin, PriceMax);
             var data = _mapper.Map<IReadOnlyList<InventoryDto>>(invens);
 
             int count = await repo.GetCount(inv =>
@@ -227,9 +227,30 @@ namespace API.Controllers
         public async Task<ActionResult<InventoryDto>> GetInventoriesByNameAndSupplier(string name)
         {
             var supplierId = int.Parse(User.FindFirstValue("SupplierInfo"));
-            var inventory = await repo.GetInvenntoriesByNameAndSupplier(name,supplierId);
+            var inventory = await repo.GetInvenntoriesByNameAndSupplier(name, supplierId);
             var inventoryDto = _mapper.Map<List<InventoryDto>>(inventory);
             return Ok(inventoryDto);
+        }
+
+        [HttpPost("UpdateProduct")]
+        [Authorize(policy: "Supplier")]
+        public async Task<ActionResult> UpdateProduct([FromBody]Product product)
+        {
+            if (product == null) { return BadRequest("Please Insert Valid Data"); }
+            await productRepo.Update(product);
+            return NoContent();
+
+        }
+
+        [HttpDelete("DeleteProduct/{productId}")]
+        [Authorize(policy: "Supplier")]
+        public async Task<ActionResult> DeleteProduct(int productId)
+        {
+            var product = await productRepo.GetByIdAsync(productId);
+            if (product == null || product.ProductId == 0) { return BadRequest("Please Insert Valid Data"); }
+            productRepo.Delete(product);
+            return NoContent();
+
         }
     }
 }

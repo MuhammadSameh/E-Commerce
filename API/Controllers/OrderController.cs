@@ -1,5 +1,6 @@
 ﻿using API.DTOs;
 using AutoMapper;
+using Core.Entities;
 using Core.Entities.OrderRelatedEntities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,20 @@ namespace API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orders = await orderRepo.GetOrdersForUserAsync(userId);
             return Ok(mapper.Map<List<OrderDto>>(orders));
+        }
+
+        [HttpGet]
+        [Route("OrdersForSupplier/{supplierId}")]
+        public async Task<ActionResult<IReadOnlyList<InventoryDto>>> GetItemsSoldForSupplier(int supplierId)
+        {
+            var orderItems = await orderRepo.GetItemsSoldForSupplier(supplierId);
+            var inventories = new List<Inventory>();
+            foreach (var item in orderItems)
+            {
+                inventories.Add(item.Inventory);
+            }
+           var invensDto = mapper.Map<List<InventoryDto>>(inventories);
+            return invensDto;
         }
 
         [HttpGet]

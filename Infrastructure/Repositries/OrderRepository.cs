@@ -49,6 +49,12 @@ namespace Infrastructure.Repositries
             return order;
         }
 
+        public async Task<IReadOnlyList<OrderItem>> GetItemsSoldForSupplier(int supplierId)
+        {
+            return await context.OrderItems.Include(oi => oi.Inventory).Include(oi => oi.Inventory.Medias).Include(oi => oi.Inventory.Product)
+                .Where(o => o.Inventory.Product.SupplierInfoId == supplierId).ToListAsync();
+        }
+
         public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string userId)
         {
             return await context.Orders.Include(o => o.DeliveryMethod)
