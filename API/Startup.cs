@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
 using Core.Interfaces;
 using Infrastructure.Repositries;
-using System.Text.Json.Serialization;
 using API.Mapper;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +16,8 @@ using API.Helpers;
 using System.Security.Claims;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Core.Interfaces.Services;
+using Core.Services;
 
 namespace API
 {
@@ -33,11 +34,12 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
-            services.AddScoped<IMediaRepository, MediaRepository>();
-            services.AddScoped<ICartRepository, CartRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

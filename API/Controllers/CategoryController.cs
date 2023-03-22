@@ -7,39 +7,40 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Core.Interfaces.Services;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository repo;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryRepository repo, IMapper mapper)
+        public CategoryController(IMapper mapper, ICategoryService categoryService)
         {
-            this.repo = repo;
             this._mapper = mapper;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Category>>> GetCategories()
         {
-             return Ok(await repo.GetAllAsync());
+             return Ok(await _categoryService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            // CREATE categoryDto!!  to represent
-            return Ok(await repo.GetCategoryById(id));
+            
+            return Ok(await _categoryService.GetCategoryById(id));
         }
 
         [HttpGet]
         [Route("topbrands/{categoryId}")]
         public async Task<ActionResult<Brand>> GetTopBrands(int categoryId)
         {
-            var category = await repo.GetCategoryById(categoryId);
+            var category = await _categoryService.GetCategoryById(categoryId);
             if(category == null) return NotFound("Wrong Category Id");
             if(category.Brands == null)
             {
@@ -56,7 +57,7 @@ namespace API.Controllers
             
             Category cat = _mapper.Map<Category>(catDto);
 
-            repo.Add(cat);
+            _categoryService.Add(cat);
             return CreatedAtAction("GetCategory", new { id = cat.CategoryId }, cat);
         }
 
@@ -73,7 +74,7 @@ namespace API.Controllers
             }
 
             Category cat = _mapper.Map<Category>(catDto);
-            repo.Update(cat);
+            _categoryService.Update(cat);
 
             return CreatedAtAction("GetCategory", new { id = cat.CategoryId }, catDto);
 
@@ -83,7 +84,7 @@ namespace API.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
-            Category cat = await repo.GetByIdAsync(id);
+            Category cat = await _categoryService.GetByIdAsync(id);
 
             if (cat is null)
                 return NotFound();
@@ -91,7 +92,7 @@ namespace API.Controllers
                 return NotFound();
             
 
-            repo.Delete(cat);
+            _categoryService.Delete(cat);
 
             return NoContent();
         }
@@ -101,19 +102,19 @@ namespace API.Controllers
         [HttpGet("parentCategories")]
         public async Task<ActionResult<IReadOnlyList<Category>>> GetParentCategories()
         {
-            return Ok(await repo.GetParentCategories());
+            return Ok(await _categoryService.GetParentCategories());
         }
 
         [HttpGet("subcategories/{parentName}")]
         public async Task<ActionResult<IReadOnlyList<Category>>> GetSubCategoriesByParent(string parentName)
         {
-            return Ok(await repo.GetSubCategoryByParentName(parentName));
+            return Ok(await _categoryService.GetSubCategoryByParentName(parentName));
         }
 
         [HttpGet("subcategoriesByparent/{parentId}")]
         public async Task<ActionResult<IReadOnlyList<Category>>> GetSubCategoriesByParent(int parentId)
         {
-            return Ok(await repo.GetSubCategoryByParentId(parentId));
+            return Ok(await _categoryService.GetSubCategoryByParentId(parentId));
         }
 
     }

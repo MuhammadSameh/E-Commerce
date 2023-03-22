@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,22 +12,23 @@ namespace API.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {
-        private readonly IBaseRepository<Brand> _repo;
-        public BrandController(IBaseRepository<Brand> repo)
+        private readonly IBaseService<Brand> _brandService;
+        public BrandController(IBaseService<Brand> brandService)
         {
-            this._repo = repo;
+            
+            _brandService = brandService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Brand>>> GetBrands()
         {
-            return Ok(await _repo.GetAllAsync());
+            return Ok(await _brandService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Brand>> GetBrand(int id)
         {
-            return Ok(await _repo.GetByIdAsync(id));
+            return Ok(await _brandService.GetByIdAsync(id));
         }
 
         [HttpPost]
@@ -34,7 +36,7 @@ namespace API.Controllers
         {
 
 
-            _repo.Add(brand);
+            _brandService.Add(brand);
             return CreatedAtAction("GetBrand", new { id = brand.BrandId }, brand);
         }
 
@@ -50,16 +52,16 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            _repo.Update(brand);
+            _brandService.Update(brand);
 
             return CreatedAtAction("GetBrand", new { id = brand.BrandId }, brand);
 
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBrand(int id)
         {
-            Brand brand = await _repo.GetByIdAsync(id);
+            Brand brand = await _brandService.GetByIdAsync(id);
 
             if (brand is null)
                 return NotFound();
@@ -67,7 +69,7 @@ namespace API.Controllers
                 return NotFound();
 
 
-            _repo.Delete(brand);
+            _brandService.Delete(brand);
 
             return NoContent();
         }

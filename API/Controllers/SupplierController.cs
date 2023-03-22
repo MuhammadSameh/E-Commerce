@@ -2,6 +2,7 @@
 using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,13 +20,13 @@ namespace API.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
-        private readonly IBaseRepository<SupplierInfo> infoRepo;
+        private readonly IBaseService<SupplierInfo> _infoService;
 
-        public SupplierController(UserManager<User> userManager, IConfiguration configuration, IBaseRepository<SupplierInfo> infoRepo)
+        public SupplierController(UserManager<User> userManager, IConfiguration configuration, IBaseRepository<SupplierInfo> infoRepo, IBaseService<SupplierInfo> infoService)
         {
             this.userManager = userManager;
             this.configuration = configuration;
-            this.infoRepo = infoRepo;
+            _infoService = infoService;
         }
 
         [HttpPost]
@@ -47,7 +48,7 @@ namespace API.Controllers
             }
             
             var supplierInfo = new SupplierInfo { UserId = supplier.Id };
-           await infoRepo.Add(supplierInfo);
+           await _infoService.Add(supplierInfo);
             await userManager.AddClaimsAsync(supplier, new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, supplier.Id),

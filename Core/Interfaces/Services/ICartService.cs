@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Services
 {
-    public interface ICartService
+    public interface ICartService: IBaseService<Cart>
     {
         Task<Cart> GetCartItems(int id);
     }

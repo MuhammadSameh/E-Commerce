@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class MediaController : Controller
     {
-        private readonly IMediaRepository repo;
+        private readonly IMediaService _mediaService;
 
-        public MediaController(IMediaRepository repo)
+        public MediaController(IMediaService mediaService)
         {
-            this.repo = repo;
+            _mediaService = mediaService;
         }
         [HttpPost]
         public ActionResult Upload()
@@ -70,7 +71,7 @@ namespace API.Controllers
         public async  Task<ActionResult> AddMedia([FromBody]Media media)
         {
             if(media== null) { return BadRequest(new { Error = "Invalid Data" });}
-            await repo.Add(media);
+            await _mediaService.Add(media);
             return Ok(media.Id);
         }
 
@@ -78,7 +79,7 @@ namespace API.Controllers
         [Route("Delete")]
         public async Task<ActionResult> DeleteMedia([FromBody]string url)
         {
-            await repo.DeleteByUrl(url);
+            await _mediaService.DeleteByUrl(url);
             string[] seperators = new string[] { "//", "/" };
             var arr = url.Split(seperators, System.StringSplitOptions.None);
             var fileName = arr[arr.Length - 1];

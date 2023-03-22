@@ -64,6 +64,7 @@ namespace Infrastructure.Repositries
             }
         }
 
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await context.Set<T>().ToListAsync();

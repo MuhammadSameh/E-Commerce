@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Services
 {
-    public interface ICategoryService
+    public interface ICategoryService: IBaseService<Category>
     {
         Task<IReadOnlyList<Category>> GetSubCategoryByParentName(string parentName);
         Task<IReadOnlyList<Category>> GetSubCategoryByParentId(int parentId);

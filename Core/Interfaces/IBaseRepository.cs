@@ -19,7 +19,7 @@ namespace Core.Interfaces
         public Task<List<T>> FindByCondition(Expression<Func<T, bool>> expression = null,
                                                      Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
                                                      Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-                                                     Func<IQueryable<T>, IQueryable<T>> pagination= null,
+                                                     Func<IQueryable<T>,int, int, IQueryable<T>> pagination= null,
                                                      int pageSize = 20,
                                                      int currentPage = 1);
     }

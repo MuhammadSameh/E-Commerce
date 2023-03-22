@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class MediaService : IMediaService
+    public class MediaService : BaseService<Media>,IMediaService
     {
         private readonly IBaseRepository<Media> _baseRepository;
 
-        public MediaService(IBaseRepository<Media> baseRepository)
+        public MediaService(IBaseRepository<Media> baseRepository) : base(baseRepository)
         {
             _baseRepository = baseRepository;
         }

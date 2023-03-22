@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class CartService : ICartService
+    public class CartService : BaseService<Cart>, ICartService
     {
         private readonly IBaseRepository<Cart> _baseRepository;
 
-        public CartService(IBaseRepository<Cart> baseRepository)
+        public CartService(IBaseRepository<Cart> baseRepository): base(baseRepository)
         {
             _baseRepository = baseRepository;
         }

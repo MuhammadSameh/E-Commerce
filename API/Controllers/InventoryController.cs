@@ -18,14 +18,12 @@ namespace API.Controllers
         private readonly IInventoryRepository repo;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Product> productRepo;
-        private readonly IBaseRepository<Media> mediaRepo;
 
         public InventoryController(IInventoryRepository repo, IMapper mapper, IBaseRepository<Product> productRepo)
         {
             this.repo = repo;
             this._mapper = mapper;
             this.productRepo = productRepo;
-            this.mediaRepo = mediaRepo;
         }
 
 

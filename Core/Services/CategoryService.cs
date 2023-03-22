@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService<Category>, ICategoryService
     {
         private readonly IBaseRepository<Category> _baseRepository;
 
-        public CategoryService(IBaseRepository<Category> baseRepository)
+        public CategoryService(IBaseRepository<Category> baseRepository): base(baseRepository)
         {
             _baseRepository = baseRepository;
         }
