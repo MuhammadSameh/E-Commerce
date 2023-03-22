@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities
 {
+    
     public class Category
     {
         public int CategoryId { get; set; }
@@ -13,6 +16,8 @@ namespace Core.Entities
         public string LogoUrl { get; set; }
 
         public int? ParentId { get; set; }
+
+        
         public Category ParentCategory { get; set; }
         public  List<Product> Products { get; set; }
 

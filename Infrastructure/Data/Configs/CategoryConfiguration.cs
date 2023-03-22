@@ -19,6 +19,7 @@ namespace Infrastructure.Data.Configs
             builder.HasOne(category => category.ParentCategory).WithMany()
                 .HasForeignKey(c => c.ParentId);
             builder.Property(c => c.ParentId).IsRequired(false);
+            builder.HasIndex(c => c.Name);
         }
     }
 }

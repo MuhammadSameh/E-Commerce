@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities
 {
+    [Index(nameof(Inventory.Price))]
     public class Inventory
     {
         public int InventoryId { get; set; }
